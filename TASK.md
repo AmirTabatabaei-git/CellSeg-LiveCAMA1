@@ -7,6 +7,14 @@ We will work on the three images that are provided for this task. For each image
 - ***im#_gold_mask.txt:*** Text file containing a rough mask for foreground (cell) pixels.
     In this file, foreground pixels are labeled with 1 and background pixels with 0.
 
+Below is an example of such an image, its annotated cells, and its mask. Note that annotated pixels of the
+same cell are represented with a different color (this coloring is just for illustration, selection of these
+colors are random). Also note that these annotations are not perfect and may have some inconsistencies. Please use annotations, as they
+are, and do not try to correct them.
+
+![Untitled](https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/1faaad10-750a-450c-a9e8-a0d5d4995394)
+
+
 Our algorithm should have the following three steps, each of which we will implement and evaluate:
 
 - **1. ObtainForegroundMask:** <sub> <Part 1 in repository> </sub> It inputs an RGB image and outputs a map of foreground pixels where foreground and background pixels 
