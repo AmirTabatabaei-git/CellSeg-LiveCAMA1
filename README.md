@@ -34,13 +34,68 @@ The quantitative metrics for evaluating the performance of the method are precis
 
 <p align="center">
 <img src="https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/ea5b5662-c7cd-4bd2-ad4e-445211e45bea" width="450" height="130">
+</p>
 
 # **Part 2**
 
-In the second part of the assignment, we need to find the approximate location of each cell by using distance transforms. The distance transform is an operator normally only applied to binary images. The result of the transform is a gray level image that looks similar to the input image, except that the gray level intensities of points inside foreground regions are changed to show the distance to the closest boundary from each point. For giving an example, when a distance transform is applied scaled by a factor of 3 it can be like the following images:
+In the second part of the assignment, we need to find the approximate location of each cell by using distance transforms. The distance transform is an operator normally only applied to binary images. The result of the transform is a gray level image that looks similar to the input image, except that the gray level intensities of points inside foreground regions are changed to show the distance to the closest boundary from each point. For example, when a distance transform is applied scaled by a factor of 3 it can be like the following images:
 
 <p align="center">
   <img src="https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/d90b675a-1e9a-4cb7-a3ec-3aef730bc754" width="250" height="80">
 </p>
 
+So for doing this, we implement the code in the method section:
+
+### Method:
+The provided code implements the following method to find the cell locations:
+- Load the image and obtained mask.
+- Applying Mask to the Image and blurring it.
+- Performed image enhancement technique (CLAHE) on blurred masked image and binarized it.
+- Apply morphological operations on the masked image and convert it to the binary image.
+- Perform the distance transform algorithm and normalization.
+- Find the local maxima related to each cell and save the XY coordinates as a CSV file.
+- Finally calculate true positives, false positives, and false negatives for each cell.
+
+### Parameters:
+The method takes two inputs, RGB image and the obtained mask. The parameter for Median filter is 7, and the clipLimit and tileGridSize parameters values for CLAHE are 15 and (30,30) respectively. The threshold value is 150 which performed better is comparison with higher values. For the distance transform function, it calculates the distance of each pixel from the nearest non-zero pixel. This function takes in three arguments: the binary image, the distance type (which is cv2.DIST_L2 for Euclidean distance), and the mask size (which is 3 for a 3×3 mask). The default settings are used for normalization. 
+
+### Visual Results:
+The provided code is tested on three images, and the distance transform and obtained cell locations are visualized for each image. The images are shown in Table 3. 
+
+<p align="center">
+  <img src="https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/5851bc56-eb51-4b9c-b27f-1bac16e1bb7a">
+</p>
+
+### Quantitative Metrics:
+The quantitative metrics for evaluating the performance of the method are precision, recall, and F-score. The results for the three images are presented in Table 4. 
+
+<p align="center">
+  <img src="https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/8a4fe22f-87c0-41e0-a350-0954e95da4d5" width="450" height="130">
+</p>
+
+# **Part 3**
+
+### Introduction:
+In this task, the objective is to implement an algorithm for finding cell boundaries. This algorithm takes an RGB image, an estimated foreground map, and an estimated set of cell locations as inputs. To achieve this, a region growing algorithm is used with the estimated set of cell locations as initial seeds. The results should be evaluated using cell-level Dice index and intersection-over-union metrics for thresholds of 0.5, 0.75, and 0.9, using a gold standard provided in a file called im*_gold_cells.txt. It is important to match the estimated cells with the gold standard cells based on their overlapping pixels rather than their ids.
+
+### Method:
+In this task we performed the region growing method. The description is mentioned below step by step from the second task to this task:
+- Applying the mask to the image and blurring it.
+- Using Contrast Limited Adaptive Histogram Equalization (CLAHE) to enhance the image.
+- Applying thresholding on the enhanced image and applying the mask.
+- Performing Morphological Operations on the masked image.
+- Converting the masked image to a binary image.
+- Applying the distance transform to the binary image.
+- Normalizing the distance transform.
+- Finding the local maxima in the distance transform.
+- Using region growing to segment the image based on the local maxima.
+- Displaying the segmented image.
+
+For this task we implemented a function. This function get_connected_component(x, y, shape) returns a list of 8-connected neighbors of a pixel in an image. The function first initializes an empty list called out, which will store the coordinates of the 8-connected neighbors. It then computes the indices of the neighboring pixels in the horizontal and vertical directions using simple arithmetic on x and y. For example, to get the top-left neighbor, it subtracts 1 from both x and y and takes the minimum of each with the maximum possible index value in that direction (i.e., 0 for the top-left corner and the shape of the image minus 1 for the bottom-right corner). The function appends the resulting (x, y) tuple to the out list. The function repeats this process for each of the 8 neighbors, and then returns the out list of neighboring pixel coordinates.
+
+### Visual results:
+
+<p align="center">
+  <img src="https://github.com/AmirTabatabaei-git/CellSeg-LiveCAMA1/assets/132440248/0f81d5e6-42e1-4c55-b6e1-248f44d10baf">
+</p>
 
